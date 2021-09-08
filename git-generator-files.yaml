@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: namespaces
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/pabrahamsson/appset.git
+        revision: HEAD
+        files:
+          - path: cluster-config/**/config.json
+  template:
+    metadata:
+      name: '{{name}}-namespace'
+    spec:
+      project: default
+      source:
+        helm:
+          parameters:
+            - name:  nameOverrided
+              value: '{{name}}'
+        repoURL: https://github.com/pabrahamsson/appset.git
+        targetRevision: HEAD
+        path: apps/namespaces
+      destination:
+        server: https://kubernetes.default.svc
