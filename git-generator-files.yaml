@@ -17,10 +17,14 @@ spec:
       source:
         helm:
           parameters:
-            - name:  nameOverrided
+            - name:  nameOverride
               value: '{{name}}'
         repoURL: https://github.com/pabrahamsson/appset.git
         targetRevision: HEAD
         path: apps/namespaces
       destination:
         server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
